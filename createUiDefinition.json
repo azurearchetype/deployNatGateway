@@ -6,33 +6,45 @@
     "basics": [
       {
         "name": "vnetSelector",
-        "type": "Microsoft.Common.DropDown",
+        "type": "Microsoft.Common.ResourceScope",
         "label": "Select Virtual Network",
-        "toolTip": "Choose a virtual network from your subscription.",
+        "toolTip": "Choose an existing virtual network.",
+        "resourceTypes": [
+          "Microsoft.Network/virtualNetworks"
+        ],
         "constraints": {
-          "allowedValues": "[map(filter(subscription().virtualNetworks, vnet => vnet.location == resourceGroup().location), vnet => { 'label': vnet.name, 'value': vnet.id })]",
+          "required": true,
+          "locationFilter": "[resourceGroup().location]"
+        },
+        "visible": true
+      },
+      {
+        "name": "subnetSelector1",
+        "type": "Microsoft.Common.DropDown",
+        "label": "Select First Subnet",
+        "toolTip": "Choose a subnet from the selected virtual network.",
+        "constraints": {
+          "allowedValues": "[map(reference(basics('vnetSelector').id, '2023-09-01').properties.subnets, subnet => { 'label': subnet.name, 'value': subnet.name })]",
           "required": true
         },
         "visible": true
       },
       {
-        "name": "subnetSelector",
-        "type": "Microsoft.Common.ListView",
-        "label": "Select Subnets",
-        "toolTip": "Choose one or more subnets from the selected virtual network.",
+        "name": "subnetSelector2",
+        "type": "Microsoft.Common.DropDown",
+        "label": "Select Second Subnet (Optional)",
+        "toolTip": "Choose another subnet, if needed.",
         "constraints": {
-          "required": true,
-          "multiSelect": true,
-          "allowedValues": "[map(reference(basics('vnetSelector'), '2023-09-01').properties.subnets, subnet => { 'label': subnet.name, 'value': subnet.name })]"
+          "allowedValues": "[map(reference(basics('vnetSelector').id, '2023-09-01').properties.subnets, subnet => { 'label': subnet.name, 'value': subnet.name })]",
+          "required": false
         },
         "visible": true
       }
     ],
     "steps": [],
     "outputs": {
-      "vnetResourceId": "[basics('vnetSelector')]",
-      "vnetName": "[reference(basics('vnetSelector'), '2023-09-01').name]",
-      "subnetNames": "[basics('subnetSelector')]"
+      "vnetName": "[basics('vnetSelector').name]",
+      "subnetNames": "[union(array(basics('subnetSelector1')), if(empty(basics('subnetSelector2')), [], array(basics('subnetSelector2'))))]"
     }
   }
 }
