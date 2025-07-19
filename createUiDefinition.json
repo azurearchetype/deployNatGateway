@@ -6,32 +6,18 @@
     "basics": [
       {
         "name": "vnetSelector",
-        "type": "Microsoft.Common.ResourceScope",
+        "type": "Microsoft.Common.ResourceSelector",
         "label": "Select Virtual Network",
         "toolTip": "Choose an existing virtual network.",
-        "resourceTypes": [
-          "Microsoft.Network/virtualNetworks"
-        ],
-        "constraints": {
-          "required": true,
-          "locationFilter": "[resourceGroup().location]"
-        },
-        "visible": true
-      },
-      {
-        "name": "subnetSelector1",
-        "type": "Microsoft.Common.AzureResourceSelector",
-        "label": "Select First Subnet",
-        "toolTip": "Choose a subnet from the selected virtual network.",
-        "resourceType": "Microsoft.Network/virtualNetworks/subnets",
+        "resourceType": "Microsoft.Network/virtualNetworks",
         "options": {
           "filter": {
-            "field": "id",
-            "contains": "[basics('vnetSelector').name]"
+            "subscription": "current",
+            "location": "current"
           },
           "select": {
             "labelField": "name",
-            "valueField": "name"
+            "valueField": "id"
           }
         },
         "constraints": {
@@ -40,21 +26,26 @@
         "visible": true
       },
       {
+        "name": "subnetSelector1",
+        "type": "Microsoft.Network.SubnetSelector",
+        "label": "Select First Subnet",
+        "toolTip": "Choose a subnet from the selected virtual network.",
+        "dependsOn": [
+          "vnetSelector"
+        ],
+        "constraints": {
+          "required": true
+        },
+        "visible": true
+      },
+      {
         "name": "subnetSelector2",
-        "type": "Microsoft.Common.AzureResourceSelector",
+        "type": "Microsoft.Network.SubnetSelector",
         "label": "Select Second Subnet (Optional)",
         "toolTip": "Choose another subnet, if needed.",
-        "resourceType": "Microsoft.Network/virtualNetworks/subnets",
-        "options": {
-          "filter": {
-            "field": "id",
-            "contains": "[basics('vnetSelector').name]"
-          },
-          "select": {
-            "labelField": "name",
-            "valueField": "name"
-          }
-        },
+        "dependsOn": [
+          "vnetSelector"
+        ],
         "constraints": {
           "required": false
         },
@@ -63,8 +54,9 @@
     ],
     "steps": [],
     "outputs": {
-      "vnetName": "[basics('vnetSelector').name]",
-      "subnetNames": "[union(array(basics('subnetSelector1')), if(empty(basics('subnetSelector2')), [], array(basics('subnetSelector2'))))]"
+      "vnetId": "[basics('vnetSelector')]",
+      "subnet1Name": "[basics('subnetSelector1')]",
+      "subnet2Name": "[basics('subnetSelector2')]"
     }
   }
 }
