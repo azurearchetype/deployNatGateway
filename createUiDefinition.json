@@ -5,33 +5,21 @@
   "parameters": {
     "basics": [
       {
-        "name": "vnetSelector",
-        "type": "Microsoft.Common.ResourceSelector",
-        "label": "Select Virtual Network",
-        "toolTip": "Choose an existing virtual network.",
-        "resourceType": "Microsoft.Network/virtualNetworks",
-        "options": {
-          "filter": {
-            "subscription": "current",
-            "location": "current"
-          },
-          "select": {
-            "labelField": "name",
-            "valueField": "id"
-          }
-        },
+        "name": "adminUsername",
+        "type": "Microsoft.Common.TextBox",
+        "label": "Admin Username",
+        "toolTip": "Enter the admin username",
         "constraints": {
-          "required": true
+          "required": true,
+          "regex": "^[a-zA-Z0-9]+$",
+          "validationMessage": "Only alphanumeric characters allowed"
         },
-        "visible": true
         "visible": true
       }
     ],
     "steps": [],
     "outputs": {
-      "vnetId": "[basics('vnetSelector')]",
-      "subnet1Name": "[basics('subnetSelector1')]",
-      "subnet2Name": "[basics('subnetSelector2')]"
+      "adminUsername": "[basics('adminUsername')]"
     }
   }
 }
