@@ -24,33 +24,6 @@
           "required": true
         },
         "visible": true
-      },
-      {
-        "name": "subnetSelector1",
-        "type": "Microsoft.Network.SubnetSelector",
-        "label": "Select First Subnet",
-        "toolTip": "Choose a subnet from the selected virtual network.",
-        "dependsOn": [
-          "vnetSelector"
-        ],
-        "constraints": {
-          "required": true
-        },
-        "visible": true
-      },
-      {
-        "name": "subnetSelector2",
-        "type": "Microsoft.Network.SubnetSelector",
-        "label": "Select Second Subnet (Optional)",
-        "toolTip": "Choose another subnet, if needed.",
-        "dependsOn": [
-          "vnetSelector"
-        ],
-        "constraints": {
-          "required": false
-        },
-        "visible": true
-      }
     ],
     "steps": [],
     "outputs": {
