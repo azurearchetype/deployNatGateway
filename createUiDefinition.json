@@ -1,0 +1,38 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/0.1.2-preview/CreateUIDefinition.MultiVm.json#",
+  "handler": "Microsoft.Azure.CreateUIDef",
+  "version": "0.1.2-preview",
+  "parameters": {
+    "basics": [
+      {
+        "name": "vnetSelector",
+        "type": "Microsoft.Common.DropDown",
+        "label": "Select Virtual Network",
+        "toolTip": "Choose a virtual network from your subscription.",
+        "constraints": {
+          "allowedValues": "[map(filter(subscription().virtualNetworks, vnet => vnet.location == resourceGroup().location), vnet => { 'label': vnet.name, 'value': vnet.id })]",
+          "required": true
+        },
+        "visible": true
+      },
+      {
+        "name": "subnetSelector",
+        "type": "Microsoft.Common.ListView",
+        "label": "Select Subnets",
+        "toolTip": "Choose one or more subnets from the selected virtual network.",
+        "constraints": {
+          "required": true,
+          "multiSelect": true,
+          "allowedValues": "[map(reference(basics('vnetSelector'), '2023-09-01').properties.subnets, subnet => { 'label': subnet.name, 'value': subnet.name })]"
+        },
+        "visible": true
+      }
+    ],
+    "steps": [],
+    "outputs": {
+      "vnetResourceId": "[basics('vnetSelector')]",
+      "vnetName": "[reference(basics('vnetSelector'), '2023-09-01').name]",
+      "subnetNames": "[basics('subnetSelector')]"
+    }
+  }
+}
