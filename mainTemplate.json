@@ -3,19 +3,41 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "vnetName": {
-      "type": "string"
+      "type": "string",
+      "metadata": {
+        "description": "Name of the existing virtual network"
+      }
     },
-    "subnetNames": {
-      "type": "array"
+    "subnet1": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the first subnet in the virtual network"
+      }
+    },
+    "subnet2": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Name of the second subnet (optional)"
+      }
     },
     "natGatewayName": {
       "type": "string",
-      "defaultValue": "myNatGateway"
+      "defaultValue": "myNatGateway",
+      "metadata": {
+        "description": "Name of the NAT Gateway to create"
+      }
     },
     "location": {
       "type": "string",
-      "defaultValue": "[resourceGroup().location]"
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Location for all resources"
+      }
     }
+  },
+  "variables": {
+    "subnetNames": "[if(equals(parameters('subnet2'), ''), array(parameters('subnet1')), array(parameters('subnet1'), parameters('subnet2')))]"
   },
   "resources": [
     {
@@ -44,13 +66,13 @@
     {
       "type": "Microsoft.Network/virtualNetworks/subnets",
       "apiVersion": "2023-09-01",
-      "name": "[concat(parameters('vnetName'), '/', parameters('subnetNames')[copyIndex()])]",
+      "name": "[concat(parameters('vnetName'), '/', variables('subnetNames')[copyIndex()])]",
       "copy": {
         "name": "subnetCopy",
-        "count": "[length(parameters('subnetNames'))]"
+        "count": "[length(variables('subnetNames'))]"
       },
       "properties": {
-        "addressPrefix": "[reference(resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetNames')[copyIndex()]), '2023-09-01').properties.addressPrefix]",
+        "addressPrefix": "[reference(resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), variables('subnetNames')[copyIndex()]), '2023-09-01').properties.addressPrefix]",
         "natGateway": {
           "id": "[resourceId('Microsoft.Network/natGateways', parameters('natGatewayName'))]"
         }
@@ -60,7 +82,7 @@
   "outputs": {
     "subnetIds": {
       "type": "array",
-      "value": "[map(parameters('subnetNames'), subnetName => resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), subnetName))]"
+      "value": "[map(variables('subnetNames'), subnetName => resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), subnetName))]"
     }
   }
 }
