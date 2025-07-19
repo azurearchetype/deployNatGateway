@@ -24,7 +24,7 @@
           "required": true
         },
         "visible": true
-    ],
+    ]
     "steps": [],
     "outputs": {
       "vnetId": "[basics('vnetSelector')]",
