@@ -72,7 +72,6 @@
         "count": "[length(variables('subnetNames'))]"
       },
       "properties": {
-        "addressPrefix": "[reference(resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), variables('subnetNames')[copyIndex()]), '2023-09-01').properties.addressPrefix]",
         "natGateway": {
           "id": "[resourceId('Microsoft.Network/natGateways', parameters('natGatewayName'))]"
         }
