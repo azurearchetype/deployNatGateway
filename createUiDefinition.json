@@ -23,14 +23,48 @@
                         }
                     },
                     {
-                        "name": "vnetName",
-                        "type": "Microsoft.Common.TextBox",
-                        "label": "Virtual Network Name",
-                        "toolTip": "Enter the name of the existing virtual network in this resource group",
+                        "name": "vnetSelector",
+                        "type": "Microsoft.Network.VirtualNetworkCombo",
+                        "label": {
+                            "virtualNetwork": "Virtual Network",
+                            "subnets": "Subnets"
+                        },
+                        "toolTip": {
+                            "virtualNetwork": "Select an existing virtual network from this resource group",
+                            "subnets": "Available subnets in the selected virtual network"
+                        },
+                        "defaultValue": {
+                            "name": "",
+                            "addressPrefixSize": "/16"
+                        },
                         "constraints": {
-                            "required": true,
+                            "minAddressPrefixSize": "/16"
+                        },
+                        "options": {
+                            "hideExisting": false
+                        },
+                        "subnets": {
+                            "subnet1": {
+                                "label": "Available subnets will be shown here",
+                                "defaultValue": {
+                                    "name": "",
+                                    "addressPrefixSize": "/24"
+                                },
+                                "constraints": {
+                                    "minAddressPrefixSize": "/24"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "name": "alternativeVnetName",
+                        "type": "Microsoft.Common.TextBox",
+                        "label": "Alternative: VNet Name (if dropdown is empty)",
+                        "toolTip": "If the dropdown above is empty, manually enter the virtual network name",
+                        "constraints": {
+                            "required": false,
                             "regex": "^[a-zA-Z0-9][a-zA-Z0-9_\\-\\.]*[a-zA-Z0-9_]$",
-                            "validationMessage": "Virtual network name must be 1-80 characters and can contain letters, numbers, hyphens, periods, and underscores"
+                            "validationMessage": "Virtual network name must be valid"
                         }
                     },
                     {
@@ -149,8 +183,8 @@
         ],
         "outputs": {
             "location": "[location()]",
-            "vnetName": "[steps('networkConfig').vnetName]",
-            "vnetResourceGroup": "[resourceGroup().name]", 
+            "vnetName": "[steps('networkConfig').vnetSelector.name]",
+            "vnetResourceGroup": "[steps('networkConfig').vnetSelector.resourceGroup]", 
             "subnetNames": {
                 "subnet1Name": "[steps('networkConfig').subnet1Name]",
                 "includeSubnet2": "[steps('networkConfig').includeSubnet2]",
