@@ -19,50 +19,27 @@
                         "type": "Microsoft.Common.InfoBox",
                         "options": {
                             "icon": "Info",
-                            "text": "This template will deploy a NAT Gateway to an existing Virtual Network. Please ensure you have an existing VNet in this resource group with the subnets you want to associate."
+                            "text": "This template will deploy a NAT Gateway to an existing Virtual Network. To find your VNet details: 1) Go to Azure Portal → Virtual Networks, 2) Note the VNet name and its resource group name, 3) Enter those details below."
                         }
                     },
                     {
-                        "name": "vnetSelector",
-                        "type": "Microsoft.Network.VirtualNetworkCombo",
-                        "label": {
-                            "virtualNetwork": "Virtual Network",
-                            "subnets": "Subnets"
-                        },
-                        "toolTip": {
-                            "virtualNetwork": "Select an existing virtual network from this resource group",
-                            "subnets": "Available subnets in the selected virtual network"
-                        },
-                        "defaultValue": {
-                            "name": "",
-                            "addressPrefixSize": "/16"
-                        },
-                        "constraints": {
-                            "minAddressPrefixSize": "/16"
-                        },
-                        "options": {
-                            "hideExisting": false
-                        },
-                        "subnets": {
-                            "subnet1": {
-                                "label": "Available subnets will be shown here",
-                                "defaultValue": {
-                                    "name": "",
-                                    "addressPrefixSize": "/24"
-                                },
-                                "constraints": {
-                                    "minAddressPrefixSize": "/24"
-                                }
-                            }
-                        }
-                    },
-                    {
-                        "name": "alternativeVnetName",
+                        "name": "vnetResourceGroup",
                         "type": "Microsoft.Common.TextBox",
-                        "label": "Alternative: VNet Name (if dropdown is empty)",
-                        "toolTip": "If the dropdown above is empty, manually enter the virtual network name",
+                        "label": "Virtual Network Resource Group",
+                        "toolTip": "Enter the name of the resource group containing your virtual network (leave empty to use current resource group)",
                         "constraints": {
                             "required": false,
+                            "regex": "^[a-zA-Z0-9][a-zA-Z0-9_\\-\\.\\(\\)]*[a-zA-Z0-9_]$|^$",
+                            "validationMessage": "Resource group name must be valid or empty"
+                        }
+                    },
+                    {
+                        "name": "vnetName",
+                        "type": "Microsoft.Common.TextBox",
+                        "label": "Virtual Network Name",
+                        "toolTip": "Enter the name of your existing virtual network",
+                        "constraints": {
+                            "required": true,
                             "regex": "^[a-zA-Z0-9][a-zA-Z0-9_\\-\\.]*[a-zA-Z0-9_]$",
                             "validationMessage": "Virtual network name must be valid"
                         }
@@ -183,8 +160,8 @@
         ],
         "outputs": {
             "location": "[location()]",
-            "vnetName": "[steps('networkConfig').vnetSelector.name]",
-            "vnetResourceGroup": "[steps('networkConfig').vnetSelector.resourceGroup]", 
+            "vnetName": "[steps('networkConfig').vnetName]",
+            "vnetResourceGroup": "[if(empty(steps('networkConfig').vnetResourceGroup), resourceGroup().name, steps('networkConfig').vnetResourceGroup)]", 
             "subnetNames": {
                 "subnet1Name": "[steps('networkConfig').subnet1Name]",
                 "includeSubnet2": "[steps('networkConfig').includeSubnet2]",
