@@ -1,113 +1,52 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/0.1.2-preview/CreateUIDefinition.MultiVm.json#",
-  "handler": "Microsoft.Azure.CreateUIDef",
-  "version": "0.1.2-preview",
-  "parameters": {
-    "config": {
-      "isWizard": false,
-      "basics": {
-        "description": "Deploy a NAT Gateway and associate it with selected subnets from an existing Virtual Network.",
-        "subscription": {
-          "constraints": {
-            "validations": [
-              {
-                "permission": "Microsoft.Network/natGateways/write",
-                "message": "Must have contributor access to deploy NAT Gateway"
-              }
-            ]
-          },
-          "resourceProviders": [
-            "Microsoft.Network"
-          ]
-        },
-        "resourceGroup": {
-          "allowExisting": true
-        },
-        "location": {
-          "visible": false
+    "$schema": "https://schema.management.azure.com/schemas/0.1.2-preview/CreateUIDefinition.MultiVm.json#",
+    "handler": "Microsoft.Azure.CreateUIDef",
+    "version": "0.1.2-preview",
+    "parameters": {
+        "basics": [],
+        "steps": [
+            {
+                "name": "networkConfig",
+                "label": "Network Configuration",
+                "subLabel": {
+                    "preValidation": "Configure the virtual network and subnets",
+                    "postValidation": "Done"
+                },
+                "bladeTitle": "Network Configuration",
+                "elements": [
+                    {
+                        "name": "vnetSelection",
+                        "type": "Microsoft.Network.VirtualNetworkCombo",
+                        "label": {
+                            "virtualNetwork": "Virtual Network",
+                            "subnets": "Subnets"
+                        },
+                        "toolTip": {
+                            "virtualNetwork": "Select an existing virtual network for the NAT Gateway.",
+                            "subnets": "Select one or more subnets to associate with the NAT Gateway."
+                        },
+                        "defaultValue": {
+                            "name": "",
+                            "addressPrefixSize": "/16"
+                        },
+                        "constraints": {
+                            "minAddressPrefixSize": "/29",
+                            "requireSubnets": true
+                        },
+                        "options": {
+                            "hideExisting": false,
+                            "hideNew": true
+                        },
+                        "subnets": {}
+                    }
+                ]
+            }
+        ],
+        "outputs": {
+            "location": "[location()]",
+            "vnetName": "[steps('networkConfig').vnetSelection.name]",
+            "vnetResourceGroup": "[steps('networkConfig').vnetSelection.resourceGroup]",
+            "subnetNames": "[steps('networkConfig').vnetSelection.subnets]"
         }
-      }
-    },
-    "basics": [
-      {
-        "name": "natGatewayName",
-        "type": "Microsoft.Common.TextBox",
-        "label": "NAT Gateway Name",
-        "placeholder": "Enter NAT Gateway name",
-        "defaultValue": "myNATGateway",
-        "toolTip": "Name for the NAT Gateway resource",
-        "constraints": {
-          "required": true,
-          "regex": "^[a-zA-Z0-9][a-zA-Z0-9-]{0,78}[a-zA-Z0-9]$",
-          "validationMessage": "NAT Gateway name must be 2-80 characters long and can contain letters, numbers, and hyphens. It must start and end with a letter or number."
-        },
-        "visible": true
-      }
-    ],
-    "steps": [
-      {
-        "name": "networkConfig",
-        "label": "Network Configuration",
-        "elements": [
-          {
-            "name": "virtualNetworkInfo",
-            "type": "Microsoft.Common.InfoBox",
-            "visible": true,
-            "options": {
-              "icon": "Info",
-              "text": "Select the existing Virtual Network and subnets where you want to associate the NAT Gateway. The NAT Gateway will provide outbound internet connectivity for resources in the selected subnets. You can select up to 2 subnets."
-            }
-          },
-          {
-            "name": "existingVirtualNetwork",
-            "type": "Microsoft.Solutions.ResourceSelector",
-            "label": "Select Virtual Network",
-            "resourceType": "Microsoft.Network/virtualNetworks",
-            "options": {
-              "filter": {
-                "subscription": "onBasics"
-              }
-            },
-            "toolTip": "Select an existing Virtual Network from your subscription",
-            "constraints": {
-              "required": true
-            }
-          },
-          {
-            "name": "subnetSelection",
-            "type": "Microsoft.Solutions.SubnetSelector",
-            "label": "Select Subnets",
-            "toolTip": "Select up to 2 subnets to associate with the NAT Gateway",
-            "constraints": {
-              "required": true,
-              "minLength": 1,
-              "maxLength": 2
-            },
-            "options": {
-              "vNetReference": "existingVirtualNetwork"
-            }
-          }
-        ]
-      }
-    ],
-    "outputs": {
-      "parameters": {
-        "vnetName": {
-          "value": "[last(split(steps('networkConfig').existingVirtualNetwork.name, '/'))]"
-        },
-        "subnet1": {
-          "value": "[if(greater(length(steps('networkConfig').subnetSelection), 0), steps('networkConfig').subnetSelection[0], '')]"
-        },
-        "subnet2": {
-          "value": "[if(greater(length(steps('networkConfig').subnetSelection), 1), steps('networkConfig').subnetSelection[1], '')]"
-        },
-        "natGatewayName": {
-          "value": "[basics('natGatewayName')]"
-        },
-        "location": {
-          "value": "[steps('networkConfig').existingVirtualNetwork.location]"
-        }
-      }
     }
-  }
 }
