@@ -24,42 +24,7 @@
           "allowExisting": true
         },
         "location": {
-          "visible": true,
-          "allowedValues": [
-            "eastus",
-            "eastus2",
-            "westus",
-            "westus2",
-            "westus3",
-            "centralus",
-            "northcentralus",
-            "southcentralus",
-            "westcentralus",
-            "canadacentral",
-            "canadaeast",
-            "brazilsouth",
-            "northeurope",
-            "westeurope",
-            "uksouth",
-            "ukwest",
-            "francecentral",
-            "germanywestcentral",
-            "norwayeast",
-            "switzerlandnorth",
-            "swedencentral",
-            "australiaeast",
-            "australiasoutheast",
-            "southeastasia",
-            "eastasia",
-            "japaneast",
-            "japanwest",
-            "koreacentral",
-            "southindia",
-            "centralindia",
-            "westindia",
-            "southafricanorth",
-            "uaenorth"
-          ]
+          "visible": false
         }
       }
     },
@@ -100,8 +65,7 @@
             "resourceType": "Microsoft.Network/virtualNetworks",
             "options": {
               "filter": {
-                "subscription": "onBasics",
-                "location": "onBasics"
+                "subscription": "onBasics"
               }
             },
             "toolTip": "Select an existing Virtual Network from your subscription",
@@ -193,8 +157,7 @@
             "resourceType": "Microsoft.Network/publicIPAddresses",
             "options": {
               "filter": {
-                "subscription": "onBasics",
-                "location": "onBasics"
+                "subscription": "onBasics"
               }
             },
             "toolTip": "Select an existing public IP address",
@@ -238,7 +201,7 @@
     ],
     "outputs": {
       "natGatewayName": "[basics('natGatewayName')]",
-      "location": "[location()]",
+      "location": "[steps('networkConfig').existingVirtualNetwork.location]",
       "virtualNetworkName": "[last(split(steps('networkConfig').existingVirtualNetwork.name, '/'))]",
       "virtualNetworkResourceGroup": "[steps('networkConfig').existingVirtualNetwork.resourceGroup]",
       "virtualNetworkId": "[steps('networkConfig').existingVirtualNetwork.id]",
