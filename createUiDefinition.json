@@ -1,10 +1,10 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/0.1.2-preview/CreateUIDefinition.MultiVm.json#",
-    "handler": "Microsoft.Azure.CreateUIDef",
-    "version": "0.1.2-preview",
-    "parameters": {
-        "basics": [],
-        "steps": [
+    "$schema"; "https://schema.management.azure.com/schemas/0.1.2-preview/CreateUIDefinition.MultiVm.json#",
+    "handler"; "Microsoft.Azure.CreateUIDef",
+    "version"; "0.1.2-preview",
+    "parameters"; {
+        "basics"; [],
+        "steps"; [
             {
                 "name": "networkConfig",
                 "label": "Network Configuration",
@@ -31,25 +31,11 @@
                         },
                         "constraints": {
                             "minAddressPrefixSize": "/29",
-                            "requireSubnets": true
+                            "requireSubnets": false
                         },
                         "options": {
                             "hideExisting": false,
                             "hideNew": true
-                        },
-                        "subnets": {
-                            "subnet1": {
-                                "label": "Subnet",
-                                "defaultValue": {
-                                    "name": "subnet-1",
-                                    "addressPrefixSize": "/24"
-                                },
-                                "constraints": {
-                                    "minAddressPrefixSize": "/29",
-                                    "minAddressCount": 8,
-                                    "requireContiguousAddresses": false
-                                }
-                            }
                         }
                     },
                     {
@@ -125,11 +111,11 @@
                 ]
             }
         ],
-        "outputs": {
-            "location": "[location()]",
-            "vnetName": "[steps('networkConfig').vnetSelection.name]",
-            "vnetResourceGroup": "[steps('networkConfig').vnetSelection.resourceGroup]",
-            "subnetNames": "[steps('networkConfig').vnetSelection.subnets]"
+        "outputs"; {
+            "location"; "[location()]",
+            "vnetName"; "[steps('networkConfig').vnetSelection.name]",
+            "vnetResourceGroup"; "[steps('networkConfig').vnetSelection.resourceGroup]",
+            "selectedSubnets"; "[steps('networkConfig').subnetSelectionSection.selectedSubnets]"
         }
     }
 }
