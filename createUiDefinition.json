@@ -19,7 +19,7 @@
                         "type": "Microsoft.Common.InfoBox",
                         "options": {
                             "icon": "Info",
-                            "text": "This template will deploy a NAT Gateway to an existing Virtual Network. To find your VNet details: 1) Go to Azure Portal → Virtual Networks, 2) Note the VNet name and its resource group name, 3) Enter those details below."
+                            "text": "This template will deploy a NAT Gateway to an existing Virtual Network. To find your VNet details: 1) Go to Azure Portal → Virtual Networks, 2) Note the VNet name and its resource group name, 3) Note the exact subnet names (case-sensitive), 4) Enter those details below."
                         }
                     },
                     {
@@ -45,11 +45,38 @@
                         }
                     },
                     {
+                        "name": "vnetValidation",
+                        "type": "Microsoft.Common.InfoBox",
+                        "visible": "[not(empty(steps('networkConfig').vnetName))]",
+                        "options": {
+                            "icon": "Info",
+                            "text": "[concat('✅ Please verify: VNet \"', steps('networkConfig').vnetName, '\" exists in resource group \"', if(empty(steps('networkConfig').vnetResourceGroup), resourceGroup().name, steps('networkConfig').vnetResourceGroup), '\". The deployment will fail if this VNet doesn\\'t exist.')]"
+                        }
+                    },
+                    {
+                        "name": "howToVerify",
+                        "type": "Microsoft.Common.InfoBox",
+                        "visible": "[not(empty(steps('networkConfig').vnetName))]",
+                        "options": {
+                            "icon": "Info",
+                            "text": "🔍 To verify: Go to Azure Portal → Virtual Networks → Search for your VNet name → Confirm it exists in the correct resource group and note the subnet names."
+                        }
+                    },
+                    {
                         "name": "subnetInfo",
                         "type": "Microsoft.Common.InfoBox",
                         "options": {
                             "icon": "Info",
                             "text": "Select the subnets from your virtual network that you want to associate with the NAT Gateway. Check the boxes for the subnets you want to include."
+                        }
+                    },
+                    {
+                        "name": "subnetValidationTip",
+                        "type": "Microsoft.Common.InfoBox",
+                        "visible": "[not(empty(steps('networkConfig').vnetName))]",
+                        "options": {
+                            "icon": "Warning",
+                            "text": "⚠️ IMPORTANT: Make sure the subnet names you enter below exactly match the existing subnet names in your VNet. Case-sensitive!"
                         }
                     },
                     {
@@ -153,6 +180,15 @@
                             "required": true,
                             "regex": "^[a-zA-Z0-9][a-zA-Z0-9_\\-\\.]*[a-zA-Z0-9_]$",
                             "validationMessage": "Public IP name must be 1-80 characters and can contain letters, numbers, hyphens, periods, and underscores"
+                        }
+                    },
+                    {
+                        "name": "deploymentSummary",
+                        "type": "Microsoft.Common.InfoBox",
+                        "visible": "[not(empty(steps('networkConfig').vnetName))]",
+                        "options": {
+                            "icon": "Info",
+                            "text": "[concat('📋 Deployment Summary:\\n• VNet: ', steps('networkConfig').vnetName, '\\n• Resource Group: ', if(empty(steps('networkConfig').vnetResourceGroup), resourceGroup().name, steps('networkConfig').vnetResourceGroup), '\\n• Primary Subnet: ', steps('networkConfig').subnet1Name, if(steps('networkConfig').includeSubnet2, concat('\\n• Additional Subnets: ', steps('networkConfig').subnet2Name), ''), '\\n\\n⚠️ The deployment will validate these resources exist during execution.')]"
                         }
                     }
                 ]
