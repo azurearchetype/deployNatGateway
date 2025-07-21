@@ -158,7 +158,17 @@
             "location": "[location()]",
             "vnetName": "[steps('networkConfig').vnetName]",
             "vnetResourceGroup": "[resourceGroup().name]", 
-            "subnetNames": "[steps('networkConfig').subnetSection]",
+            "subnetNames": {
+                "subnet1Name": "[steps('networkConfig').subnetSection.subnet1Name]",
+                "includeSubnet2": "[steps('networkConfig').subnetSection.includeSubnet2]",
+                "subnet2Name": "[steps('networkConfig').subnetSection.subnet2Name]",
+                "includeSubnet3": "[steps('networkConfig').subnetSection.includeSubnet3]",
+                "subnet3Name": "[steps('networkConfig').subnetSection.subnet3Name]",
+                "includeSubnet4": "[steps('networkConfig').subnetSection.includeSubnet4]",
+                "subnet4Name": "[steps('networkConfig').subnetSection.subnet4Name]",
+                "includeSubnet5": "[steps('networkConfig').subnetSection.includeSubnet5]",
+                "subnet5Name": "[steps('networkConfig').subnetSection.subnet5Name]"
+            },
             "natGatewayName": "[steps('networkConfig').natGatewayName]",
             "publicIpName": "[steps('networkConfig').publicIpName]"
         }
