@@ -86,7 +86,7 @@
             "defaultDescription": "Select 1-2 subnets",
             "toolTip": "Select up to 2 subnets that should use this NAT Gateway for outbound connectivity.",
             "constraints": {
-              "allowedValues": "[map(steps('networkConfig').existingVirtualNetwork.subnets, (item) => parse(concat('{\"label\":\"', item.name, ' (', item.addressPrefix, ')\",\"description\":\"Address: ', item.addressPrefix, '\",\"value\":\"', item.id, '\"}')))]",
+              "allowedValues": "[map(steps('networkConfig').existingVirtualNetwork.subnets, (item) => parse(concat('{\"label\":\"', item.name, ' (', item.addressPrefix, ')\",\"description\":\"Address: ', item.addressPrefix, '\",\"value\":\"', item.name, '\"}')))]",
               "required": true
             },
             "visible": "[greater(length(steps('networkConfig').existingVirtualNetwork.subnets), 0)]"
@@ -118,10 +118,10 @@
           "value": "[last(split(steps('networkConfig').existingVirtualNetwork.name, '/'))]"
         },
         "subnet1": {
-          "value": "[if(greater(length(steps('networkConfig').subnetSelection), 0), last(split(steps('networkConfig').subnetSelection[0], '/')), '')]"
+          "value": "[if(greater(length(steps('networkConfig').subnetSelection), 0), steps('networkConfig').subnetSelection[0], '')]"
         },
         "subnet2": {
-          "value": "[if(greater(length(steps('networkConfig').subnetSelection), 1), last(split(steps('networkConfig').subnetSelection[1], '/')), '')]"
+          "value": "[if(greater(length(steps('networkConfig').subnetSelection), 1), steps('networkConfig').subnetSelection[1], '')]"
         },
         "natGatewayName": {
           "value": "[basics('natGatewayName')]"
