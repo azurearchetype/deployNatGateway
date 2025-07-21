@@ -34,98 +34,91 @@
                         }
                     },
                     {
-                        "name": "subnetSection",
-                        "type": "Microsoft.Common.Section",
-                        "label": "Subnet Selection",
-                        "elements": [
-                            {
-                                "name": "subnetInfo",
-                                "type": "Microsoft.Common.InfoBox",
-                                "options": {
-                                    "icon": "Info",
-                                    "text": "Select the subnets from your virtual network that you want to associate with the NAT Gateway. Check the boxes for the subnets you want to include."
-                                }
-                            },
-                            {
-                                "name": "subnet1Name",
-                                "type": "Microsoft.Common.TextBox",
-                                "label": "Subnet 1 Name",
-                                "toolTip": "Enter the name of the first subnet to associate with the NAT Gateway",
-                                "constraints": {
-                                    "required": true,
-                                    "regex": "^[a-zA-Z0-9][a-zA-Z0-9_\\-\\.]*[a-zA-Z0-9_]$",
-                                    "validationMessage": "Subnet name must be valid"
-                                }
-                            },
-                            {
-                                "name": "includeSubnet2",
-                                "type": "Microsoft.Common.CheckBox",
-                                "label": "Include a second subnet"
-                            },
-                            {
-                                "name": "subnet2Name",
-                                "type": "Microsoft.Common.TextBox",
-                                "label": "Subnet 2 Name", 
-                                "toolTip": "Enter the name of the second subnet to associate with the NAT Gateway",
-                                "visible": "[steps('networkConfig').subnetSection.includeSubnet2]",
-                                "constraints": {
-                                    "required": "[steps('networkConfig').subnetSection.includeSubnet2]",
-                                    "regex": "^[a-zA-Z0-9][a-zA-Z0-9_\\-\\.]*[a-zA-Z0-9_]$",
-                                    "validationMessage": "Subnet name must be valid"
-                                }
-                            },
-                            {
-                                "name": "includeSubnet3",
-                                "type": "Microsoft.Common.CheckBox",
-                                "label": "Include a third subnet"
-                            },
-                            {
-                                "name": "subnet3Name",
-                                "type": "Microsoft.Common.TextBox",
-                                "label": "Subnet 3 Name",
-                                "toolTip": "Enter the name of the third subnet to associate with the NAT Gateway",
-                                "visible": "[steps('networkConfig').subnetSection.includeSubnet3]",
-                                "constraints": {
-                                    "required": "[steps('networkConfig').subnetSection.includeSubnet3]",
-                                    "regex": "^[a-zA-Z0-9][a-zA-Z0-9_\\-\\.]*[a-zA-Z0-9_]$",
-                                    "validationMessage": "Subnet name must be valid"
-                                }
-                            },
-                            {
-                                "name": "includeSubnet4",
-                                "type": "Microsoft.Common.CheckBox",
-                                "label": "Include a fourth subnet"
-                            },
-                            {
-                                "name": "subnet4Name",
-                                "type": "Microsoft.Common.TextBox",
-                                "label": "Subnet 4 Name",
-                                "toolTip": "Enter the name of the fourth subnet to associate with the NAT Gateway",
-                                "visible": "[steps('networkConfig').subnetSection.includeSubnet4]",
-                                "constraints": {
-                                    "required": "[steps('networkConfig').subnetSection.includeSubnet4]",
-                                    "regex": "^[a-zA-Z0-9][a-zA-Z0-9_\\-\\.]*[a-zA-Z0-9_]$",
-                                    "validationMessage": "Subnet name must be valid"
-                                }
-                            },
-                            {
-                                "name": "includeSubnet5",
-                                "type": "Microsoft.Common.CheckBox",
-                                "label": "Include a fifth subnet"
-                            },
-                            {
-                                "name": "subnet5Name",
-                                "type": "Microsoft.Common.TextBox", 
-                                "label": "Subnet 5 Name",
-                                "toolTip": "Enter the name of the fifth subnet to associate with the NAT Gateway",
-                                "visible": "[steps('networkConfig').subnetSection.includeSubnet5]",
-                                "constraints": {
-                                    "required": "[steps('networkConfig').subnetSection.includeSubnet5]",
-                                    "regex": "^[a-zA-Z0-9][a-zA-Z0-9_\\-\\.]*[a-zA-Z0-9_]$",
-                                    "validationMessage": "Subnet name must be valid"
-                                }
-                            }
-                        ]
+                        "name": "subnetInfo",
+                        "type": "Microsoft.Common.InfoBox",
+                        "options": {
+                            "icon": "Info",
+                            "text": "Select the subnets from your virtual network that you want to associate with the NAT Gateway. Check the boxes for the subnets you want to include."
+                        }
+                    },
+                    {
+                        "name": "subnet1Name",
+                        "type": "Microsoft.Common.TextBox",
+                        "label": "Subnet 1 Name",
+                        "toolTip": "Enter the name of the first subnet to associate with the NAT Gateway",
+                        "constraints": {
+                            "required": true,
+                            "regex": "^[a-zA-Z0-9][a-zA-Z0-9_\\-\\.]*[a-zA-Z0-9_]$",
+                            "validationMessage": "Subnet name must be valid"
+                        }
+                    },
+                    {
+                        "name": "includeSubnet2",
+                        "type": "Microsoft.Common.CheckBox",
+                        "label": "Include a second subnet"
+                    },
+                    {
+                        "name": "subnet2Name",
+                        "type": "Microsoft.Common.TextBox",
+                        "label": "Subnet 2 Name", 
+                        "toolTip": "Enter the name of the second subnet to associate with the NAT Gateway",
+                        "visible": "[steps('networkConfig').includeSubnet2]",
+                        "constraints": {
+                            "required": "[steps('networkConfig').includeSubnet2]",
+                            "regex": "^[a-zA-Z0-9][a-zA-Z0-9_\\-\\.]*[a-zA-Z0-9_]$",
+                            "validationMessage": "Subnet name must be valid"
+                        }
+                    },
+                    {
+                        "name": "includeSubnet3",
+                        "type": "Microsoft.Common.CheckBox",
+                        "label": "Include a third subnet"
+                    },
+                    {
+                        "name": "subnet3Name",
+                        "type": "Microsoft.Common.TextBox",
+                        "label": "Subnet 3 Name",
+                        "toolTip": "Enter the name of the third subnet to associate with the NAT Gateway",
+                        "visible": "[steps('networkConfig').includeSubnet3]",
+                        "constraints": {
+                            "required": "[steps('networkConfig').includeSubnet3]",
+                            "regex": "^[a-zA-Z0-9][a-zA-Z0-9_\\-\\.]*[a-zA-Z0-9_]$",
+                            "validationMessage": "Subnet name must be valid"
+                        }
+                    },
+                    {
+                        "name": "includeSubnet4",
+                        "type": "Microsoft.Common.CheckBox",
+                        "label": "Include a fourth subnet"
+                    },
+                    {
+                        "name": "subnet4Name",
+                        "type": "Microsoft.Common.TextBox",
+                        "label": "Subnet 4 Name",
+                        "toolTip": "Enter the name of the fourth subnet to associate with the NAT Gateway",
+                        "visible": "[steps('networkConfig').includeSubnet4]",
+                        "constraints": {
+                            "required": "[steps('networkConfig').includeSubnet4]",
+                            "regex": "^[a-zA-Z0-9][a-zA-Z0-9_\\-\\.]*[a-zA-Z0-9_]$",
+                            "validationMessage": "Subnet name must be valid"
+                        }
+                    },
+                    {
+                        "name": "includeSubnet5",
+                        "type": "Microsoft.Common.CheckBox",
+                        "label": "Include a fifth subnet"
+                    },
+                    {
+                        "name": "subnet5Name",
+                        "type": "Microsoft.Common.TextBox", 
+                        "label": "Subnet 5 Name",
+                        "toolTip": "Enter the name of the fifth subnet to associate with the NAT Gateway",
+                        "visible": "[steps('networkConfig').includeSubnet5]",
+                        "constraints": {
+                            "required": "[steps('networkConfig').includeSubnet5]",
+                            "regex": "^[a-zA-Z0-9][a-zA-Z0-9_\\-\\.]*[a-zA-Z0-9_]$",
+                            "validationMessage": "Subnet name must be valid"
+                        }
                     },
                     {
                         "name": "natGatewayName",
@@ -159,15 +152,15 @@
             "vnetName": "[steps('networkConfig').vnetName]",
             "vnetResourceGroup": "[resourceGroup().name]", 
             "subnetNames": {
-                "subnet1Name": "[steps('networkConfig').subnetSection.subnet1Name]",
-                "includeSubnet2": "[steps('networkConfig').subnetSection.includeSubnet2]",
-                "subnet2Name": "[steps('networkConfig').subnetSection.subnet2Name]",
-                "includeSubnet3": "[steps('networkConfig').subnetSection.includeSubnet3]",
-                "subnet3Name": "[steps('networkConfig').subnetSection.subnet3Name]",
-                "includeSubnet4": "[steps('networkConfig').subnetSection.includeSubnet4]",
-                "subnet4Name": "[steps('networkConfig').subnetSection.subnet4Name]",
-                "includeSubnet5": "[steps('networkConfig').subnetSection.includeSubnet5]",
-                "subnet5Name": "[steps('networkConfig').subnetSection.subnet5Name]"
+                "subnet1Name": "[steps('networkConfig').subnet1Name]",
+                "includeSubnet2": "[steps('networkConfig').includeSubnet2]",
+                "subnet2Name": "[steps('networkConfig').subnet2Name]",
+                "includeSubnet3": "[steps('networkConfig').includeSubnet3]",
+                "subnet3Name": "[steps('networkConfig').subnet3Name]",
+                "includeSubnet4": "[steps('networkConfig').includeSubnet4]",
+                "subnet4Name": "[steps('networkConfig').subnet4Name]",
+                "includeSubnet5": "[steps('networkConfig').includeSubnet5]",
+                "subnet5Name": "[steps('networkConfig').subnet5Name]"
             },
             "natGatewayName": "[steps('networkConfig').natGatewayName]",
             "publicIpName": "[steps('networkConfig').publicIpName]"
