@@ -55,7 +55,7 @@
             "visible": true,
             "options": {
               "icon": "Info",
-              "text": "Select the existing Virtual Network and subnets where you want to associate the NAT Gateway. The NAT Gateway will provide outbound internet connectivity for resources in the selected subnets."
+              "text": "Select the existing Virtual Network and subnets where you want to associate the NAT Gateway. The NAT Gateway will provide outbound internet connectivity for resources in the selected subnets. You can select up to 2 subnets."
             }
           },
           {
@@ -79,12 +79,12 @@
             "label": "Select Subnets",
             "placeholder": "Choose subnets to associate with NAT Gateway",
             "multiselect": true,
-            "selectAll": true,
+            "selectAll": false,
             "filter": true,
             "filterPlaceholder": "Filter subnets...",
             "multiLine": true,
-            "defaultDescription": "Select one or more subnets",
-            "toolTip": "Select the subnets that should use this NAT Gateway for outbound connectivity. You can select multiple subnets.",
+            "defaultDescription": "Select 1-2 subnets",
+            "toolTip": "Select up to 2 subnets that should use this NAT Gateway for outbound connectivity.",
             "constraints": {
               "allowedValues": "[map(steps('networkConfig').existingVirtualNetwork.subnets, (item) => parse(concat('{\"label\":\"', item.name, ' (', item.addressPrefix, ')\",\"description\":\"Address: ', item.addressPrefix, '\",\"value\":\"', item.id, '\"}')))]",
               "required": true
@@ -99,118 +99,37 @@
               "icon": "Warning",
               "text": "The selected Virtual Network does not contain any subnets. Please select a different Virtual Network or create subnets in the selected VNet first."
             }
-          }
-        ]
-      },
-      {
-        "name": "natGatewayConfig",
-        "label": "NAT Gateway Configuration",
-        "elements": [
+          },
           {
-            "name": "natGatewayConfigInfo",
+            "name": "subnetLimitWarning",
             "type": "Microsoft.Common.InfoBox",
-            "visible": true,
+            "visible": "[greater(length(steps('networkConfig').subnetSelection), 2)]",
             "options": {
-              "icon": "Info",
-              "text": "Configure the NAT Gateway settings including public IP allocation and idle timeout."
-            }
-          },
-          {
-            "name": "publicIpOption",
-            "type": "Microsoft.Common.OptionsGroup",
-            "label": "Public IP Configuration",
-            "defaultValue": "Create new",
-            "toolTip": "Choose whether to create a new public IP or use an existing one",
-            "constraints": {
-              "allowedValues": [
-                {
-                  "label": "Create new",
-                  "value": "new"
-                },
-                {
-                  "label": "Use existing",
-                  "value": "existing"
-                }
-              ],
-              "required": true
-            },
-            "visible": true
-          },
-          {
-            "name": "publicIpName",
-            "type": "Microsoft.Common.TextBox",
-            "label": "Public IP Name",
-            "placeholder": "Enter public IP name",
-            "defaultValue": "[concat(basics('natGatewayName'), '-pip')]",
-            "toolTip": "Name for the new public IP resource",
-            "constraints": {
-              "required": true,
-              "regex": "^[a-zA-Z0-9][a-zA-Z0-9-_.]{0,78}[a-zA-Z0-9_]$",
-              "validationMessage": "Public IP name must be 2-80 characters long and can contain letters, numbers, hyphens, periods, and underscores."
-            },
-            "visible": "[equals(steps('natGatewayConfig').publicIpOption, 'new')]"
-          },
-          {
-            "name": "existingPublicIp",
-            "type": "Microsoft.Solutions.ResourceSelector",
-            "label": "Select Existing Public IP",
-            "resourceType": "Microsoft.Network/publicIPAddresses",
-            "options": {
-              "filter": {
-                "subscription": "onBasics"
-              }
-            },
-            "toolTip": "Select an existing public IP address",
-            "constraints": {
-              "required": true
-            },
-            "visible": "[equals(steps('natGatewayConfig').publicIpOption, 'existing')]"
-          },
-          {
-            "name": "publicIpSku",
-            "type": "Microsoft.Common.DropDown",
-            "label": "Public IP SKU",
-            "defaultValue": "Standard",
-            "toolTip": "SKU for the public IP address. Standard is required for NAT Gateway.",
-            "constraints": {
-              "allowedValues": [
-                {
-                  "label": "Standard",
-                  "value": "Standard"
-                }
-              ],
-              "required": true
-            },
-            "visible": "[equals(steps('natGatewayConfig').publicIpOption, 'new')]"
-          },
-          {
-            "name": "idleTimeoutInMinutes",
-            "type": "Microsoft.Common.Slider",
-            "min": 4,
-            "max": 120,
-            "label": "Idle Timeout (minutes)",
-            "defaultValue": 4,
-            "showStepMarkers": false,
-            "toolTip": "The idle timeout for the NAT Gateway in minutes (4-120). This determines how long TCP connections remain open when idle.",
-            "constraints": {
-              "required": false
+              "icon": "Warning",
+              "text": "This template supports up to 2 subnets. Only the first 2 selected subnets will be used."
             }
           }
         ]
       }
     ],
     "outputs": {
-      "natGatewayName": "[basics('natGatewayName')]",
-      "location": "[steps('networkConfig').existingVirtualNetwork.location]",
-      "virtualNetworkName": "[last(split(steps('networkConfig').existingVirtualNetwork.name, '/'))]",
-      "virtualNetworkResourceGroup": "[steps('networkConfig').existingVirtualNetwork.resourceGroup]",
-      "virtualNetworkId": "[steps('networkConfig').existingVirtualNetwork.id]",
-      "subnetIds": "[steps('networkConfig').subnetSelection]",
-      "publicIpOption": "[steps('natGatewayConfig').publicIpOption]",
-      "publicIpName": "[if(equals(steps('natGatewayConfig').publicIpOption, 'new'), steps('natGatewayConfig').publicIpName, '')]",
-      "existingPublicIpId": "[if(equals(steps('natGatewayConfig').publicIpOption, 'existing'), steps('natGatewayConfig').existingPublicIp.id, '')]",
-      "publicIpSku": "[if(equals(steps('natGatewayConfig').publicIpOption, 'new'), steps('natGatewayConfig').publicIpSku, 'Standard')]",
-      "idleTimeoutInMinutes": "[steps('natGatewayConfig').idleTimeoutInMinutes]"
+      "parameters": {
+        "vnetName": {
+          "value": "[last(split(steps('networkConfig').existingVirtualNetwork.name, '/'))]"
+        },
+        "subnet1": {
+          "value": "[if(greater(length(steps('networkConfig').subnetSelection), 0), last(split(steps('networkConfig').subnetSelection[0], '/')), '')]"
+        },
+        "subnet2": {
+          "value": "[if(greater(length(steps('networkConfig').subnetSelection), 1), last(split(steps('networkConfig').subnetSelection[1], '/')), '')]"
+        },
+        "natGatewayName": {
+          "value": "[basics('natGatewayName')]"
+        },
+        "location": {
+          "value": "[steps('networkConfig').existingVirtualNetwork.location]"
+        }
+      }
     }
   }
 }
