@@ -1,0 +1,114 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/0.1.2-preview/CreateUIDefinition.MultiVm.json#",
+    "handler": "Microsoft.Azure.CreateUIDef",
+    "version": "0.1.2-preview",
+    "parameters": {
+        "basics": [],
+        "steps": [
+            {
+                "name": "networkConfig",
+                "label": "Network Configuration",
+                "subLabel": {
+                    "preValidation": "Configure the virtual network and subnets",
+                    "postValidation": "Done"
+                },
+                "bladeTitle": "Network Configuration",
+                "elements": [
+                    {
+                        "name": "vnetResourceGroup",
+                        "type": "Microsoft.Common.TextBox",
+                        "label": "Virtual Network Resource Group",
+                        "toolTip": "Enter the name of the resource group containing the existing virtual network",
+                        "constraints": {
+                            "required": true,
+                            "regex": "^[a-zA-Z0-9][a-zA-Z0-9_\\-\\.]*[a-zA-Z0-9_]$",
+                            "validationMessage": "Resource group name must be 1-90 characters and can contain letters, numbers, hyphens, periods, and underscores"
+                        }
+                    },
+                    {
+                        "name": "vnetName",
+                        "type": "Microsoft.Common.TextBox",
+                        "label": "Virtual Network Name",
+                        "toolTip": "Enter the name of the existing virtual network",
+                        "constraints": {
+                            "required": true,
+                            "regex": "^[a-zA-Z0-9][a-zA-Z0-9_\\-\\.]*[a-zA-Z0-9_]$",
+                            "validationMessage": "Virtual network name must be 1-80 characters and can contain letters, numbers, hyphens, periods, and underscores"
+                        }
+                    },
+                    {
+                        "name": "infoBox",
+                        "type": "Microsoft.Common.InfoBox",
+                        "options": {
+                            "icon": "Info",
+                            "text": "Enter the names of the subnets you want to associate with the NAT Gateway. You can find these in the Azure portal under your Virtual Network's Subnets section."
+                        }
+                    },
+                    {
+                        "name": "subnetNames",
+                        "type": "Microsoft.Common.EditableGrid",
+                        "ariaLabel": "Subnet selection",
+                        "label": "Subnets to Associate with NAT Gateway",
+                        "constraints": {
+                            "width": "Full",
+                            "rows": {
+                                "count": {
+                                    "min": 1,
+                                    "max": 5
+                                }
+                            },
+                            "columns": [
+                                {
+                                    "id": "name",
+                                    "header": "Subnet Name",
+                                    "width": "1fr",
+                                    "element": {
+                                        "type": "Microsoft.Common.TextBox",
+                                        "placeholder": "Enter existing subnet name",
+                                        "constraints": {
+                                            "required": true,
+                                            "regex": "^[a-zA-Z0-9][a-zA-Z0-9_\\-\\.]*[a-zA-Z0-9_]$",
+                                            "validationMessage": "Subnet name must be valid"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "natGatewayName",
+                        "type": "Microsoft.Common.TextBox",
+                        "label": "NAT Gateway Name",
+                        "defaultValue": "[concat('natGateway-', take(uniqueString(resourceGroup().id), 8))]",
+                        "toolTip": "Name for the NAT Gateway resource",
+                        "constraints": {
+                            "required": true,
+                            "regex": "^[a-zA-Z0-9][a-zA-Z0-9_\\-\\.]*[a-zA-Z0-9_]$",
+                            "validationMessage": "NAT Gateway name must be 1-80 characters and can contain letters, numbers, hyphens, periods, and underscores"
+                        }
+                    },
+                    {
+                        "name": "publicIpName",
+                        "type": "Microsoft.Common.TextBox",
+                        "label": "Public IP Name",
+                        "defaultValue": "[concat('pip-natGateway-', take(uniqueString(resourceGroup().id), 8))]",
+                        "toolTip": "Name for the public IP address resource",
+                        "constraints": {
+                            "required": true,
+                            "regex": "^[a-zA-Z0-9][a-zA-Z0-9_\\-\\.]*[a-zA-Z0-9_]$",
+                            "validationMessage": "Public IP name must be 1-80 characters and can contain letters, numbers, hyphens, periods, and underscores"
+                        }
+                    }
+                ]
+            }
+        ],
+        "outputs": {
+            "location": "[location()]",
+            "vnetName": "[steps('networkConfig').vnetName]",
+            "vnetResourceGroup": "[steps('networkConfig').vnetResourceGroup]",
+            "subnetNames": "[steps('networkConfig').subnetNames]",
+            "natGatewayName": "[steps('networkConfig').natGatewayName]",
+            "publicIpName": "[steps('networkConfig').publicIpName]"
+        }
+    }
+}

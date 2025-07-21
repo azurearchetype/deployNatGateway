@@ -15,64 +15,74 @@
                 "bladeTitle": "Network Configuration",
                 "elements": [
                     {
-                        "name": "vnetResourceGroup",
-                        "type": "Microsoft.Common.TextBox",
-                        "label": "Virtual Network Resource Group",
-                        "toolTip": "Enter the name of the resource group containing the existing virtual network",
+                        "name": "vnetSelector",
+                        "type": "Microsoft.Network.VirtualNetworkCombo",
+                        "label": {
+                            "virtualNetwork": "Virtual network",
+                            "subnets": "Subnets"
+                        },
+                        "toolTip": {
+                            "virtualNetwork": "Virtual network to deploy the NAT Gateway in",
+                            "subnets": "Subnets to associate with the NAT Gateway"
+                        },
+                        "defaultValue": {
+                            "name": "vnet01",
+                            "addressPrefixSize": "/16"
+                        },
                         "constraints": {
-                            "required": true,
-                            "regex": "^[a-zA-Z0-9][a-zA-Z0-9_\\-\\.]*[a-zA-Z0-9_]$",
-                            "validationMessage": "Resource group name must be 1-90 characters and can contain letters, numbers, hyphens, periods, and underscores"
-                        }
-                    },
-                    {
-                        "name": "vnetName",
-                        "type": "Microsoft.Common.TextBox",
-                        "label": "Virtual Network Name",
-                        "toolTip": "Enter the name of the existing virtual network",
-                        "constraints": {
-                            "required": true,
-                            "regex": "^[a-zA-Z0-9][a-zA-Z0-9_\\-\\.]*[a-zA-Z0-9_]$",
-                            "validationMessage": "Virtual network name must be 1-80 characters and can contain letters, numbers, hyphens, periods, and underscores"
-                        }
-                    },
-                    {
-                        "name": "infoBox",
-                        "type": "Microsoft.Common.InfoBox",
-                        "options": {
-                            "icon": "Info",
-                            "text": "Enter the names of the subnets you want to associate with the NAT Gateway. You can find these in the Azure portal under your Virtual Network's Subnets section."
-                        }
-                    },
-                    {
-                        "name": "subnetNames",
-                        "type": "Microsoft.Common.EditableGrid",
-                        "ariaLabel": "Subnet selection",
-                        "label": "Subnets to Associate with NAT Gateway",
-                        "constraints": {
-                            "width": "Full",
-                            "rows": {
-                                "count": {
-                                    "min": 1,
-                                    "max": 5
+                            "minAddressPrefixSize": "/16"
+                        },
+                        "subnets": {
+                            "subnet1": {
+                                "label": "First subnet",
+                                "defaultValue": {
+                                    "name": "subnet-1",
+                                    "addressPrefixSize": "/24"
+                                },
+                                "constraints": {
+                                    "minAddressPrefixSize": "/24"
                                 }
                             },
-                            "columns": [
-                                {
-                                    "id": "name",
-                                    "header": "Subnet Name",
-                                    "width": "1fr",
-                                    "element": {
-                                        "type": "Microsoft.Common.TextBox",
-                                        "placeholder": "Enter existing subnet name",
-                                        "constraints": {
-                                            "required": true,
-                                            "regex": "^[a-zA-Z0-9][a-zA-Z0-9_\\-\\.]*[a-zA-Z0-9_]$",
-                                            "validationMessage": "Subnet name must be valid"
-                                        }
-                                    }
+                            "subnet2": {
+                                "label": "Second subnet",
+                                "defaultValue": {
+                                    "name": "subnet-2", 
+                                    "addressPrefixSize": "/24"
+                                },
+                                "constraints": {
+                                    "minAddressPrefixSize": "/24"
                                 }
-                            ]
+                            },
+                            "subnet3": {
+                                "label": "Third subnet",
+                                "defaultValue": {
+                                    "name": "subnet-3",
+                                    "addressPrefixSize": "/24"
+                                },
+                                "constraints": {
+                                    "minAddressPrefixSize": "/24"
+                                }
+                            },
+                            "subnet4": {
+                                "label": "Fourth subnet",
+                                "defaultValue": {
+                                    "name": "subnet-4",
+                                    "addressPrefixSize": "/24"
+                                },
+                                "constraints": {
+                                    "minAddressPrefixSize": "/24"
+                                }
+                            },
+                            "subnet5": {
+                                "label": "Fifth subnet",
+                                "defaultValue": {
+                                    "name": "subnet-5",
+                                    "addressPrefixSize": "/24"
+                                },
+                                "constraints": {
+                                    "minAddressPrefixSize": "/24"
+                                }
+                            }
                         }
                     },
                     {
@@ -104,9 +114,9 @@
         ],
         "outputs": {
             "location": "[location()]",
-            "vnetName": "[steps('networkConfig').vnetName]",
-            "vnetResourceGroup": "[steps('networkConfig').vnetResourceGroup]",
-            "subnetNames": "[steps('networkConfig').subnetNames]",
+            "vnetName": "[steps('networkConfig').vnetSelector.name]",
+            "vnetResourceGroup": "[resourceGroup().name]",
+            "subnetNames": "[steps('networkConfig').vnetSelector.subnets]",
             "natGatewayName": "[steps('networkConfig').natGatewayName]",
             "publicIpName": "[steps('networkConfig').publicIpName]"
         }
