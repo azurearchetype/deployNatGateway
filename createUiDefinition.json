@@ -15,108 +15,92 @@
                 "bladeTitle": "Network Configuration",
                 "elements": [
                     {
-                        "name": "vnetSelection",
-                        "type": "Microsoft.Network.VirtualNetworkCombo",
-                        "label": {
-                            "virtualNetwork": "Virtual Network",
-                            "subnets": "Subnets"
-                        },
-                        "toolTip": {
-                            "virtualNetwork": "Select an existing virtual network for the NAT Gateway.",
-                            "subnets": "Select one or more subnets to associate with the NAT Gateway."
-                        },
-                        "defaultValue": {
-                            "name": "",
-                            "addressPrefixSize": "/16"
-                        },
+                        "name": "vnetResourceGroup",
+                        "type": "Microsoft.Common.TextBox",
+                        "label": "Virtual Network Resource Group",
+                        "toolTip": "Enter the name of the resource group containing the existing virtual network",
                         "constraints": {
-                            "minAddressPrefixSize": "/29",
-                            "requireSubnets": false
-                        },
-                        "options": {
-                            "hideExisting": false,
-                            "hideNew": true
+                            "required": true,
+                            "regex": "^[a-zA-Z0-9][a-zA-Z0-9_\\-\\.]*[a-zA-Z0-9_]$",
+                            "validationMessage": "Resource group name must be 1-90 characters and can contain letters, numbers, hyphens, periods, and underscores"
                         }
                     },
                     {
-                        "name": "subnetSelectionSection",
-                        "type": "Microsoft.Common.Section",
-                        "label": "Subnet Selection",
-                        "visible": "[and(not(empty(steps('networkConfig').vnetSelection.name)), greater(length(steps('networkConfig').vnetSelection.subnets), 0))]",
-                        "elements": [
-                            {
-                                "name": "subnetInfo",
-                                "type": "Microsoft.Common.InfoBox",
-                                "options": {
-                                    "icon": "Info",
-                                    "text": "Select the subnets from the chosen virtual network that you want to associate with the NAT Gateway."
+                        "name": "vnetName",
+                        "type": "Microsoft.Common.TextBox",
+                        "label": "Virtual Network Name",
+                        "toolTip": "Enter the name of the existing virtual network",
+                        "constraints": {
+                            "required": true,
+                            "regex": "^[a-zA-Z0-9][a-zA-Z0-9_\\-\\.]*[a-zA-Z0-9_]$",
+                            "validationMessage": "Virtual network name must be 1-80 characters and can contain letters, numbers, hyphens, periods, and underscores"
+                        }
+                    },
+                    {
+                        "name": "subnetNames",
+                        "type": "Microsoft.Common.EditableGrid",
+                        "ariaLabel": "Subnet selection",
+                        "label": "Subnets to Associate with NAT Gateway",
+                        "constraints": {
+                            "width": "Full",
+                            "rows": {
+                                "count": {
+                                    "min": 1,
+                                    "max": 5
                                 }
                             },
-                            {
-                                "name": "selectedSubnets",
-                                "type": "Microsoft.Common.EditableGrid",
-                                "ariaLabel": "Subnet selection",
-                                "label": "Available Subnets",
-                                "constraints": {
-                                    "width": "Full",
-                                    "rows": {
-                                        "count": {
-                                            "min": 1,
-                                            "max": 10
+                            "columns": [
+                                {
+                                    "id": "name",
+                                    "header": "Subnet Name",
+                                    "width": "1fr",
+                                    "element": {
+                                        "type": "Microsoft.Common.TextBox",
+                                        "placeholder": "Enter subnet name",
+                                        "constraints": {
+                                            "required": true,
+                                            "regex": "^[a-zA-Z0-9][a-zA-Z0-9_\\-\\.]*[a-zA-Z0-9_]$",
+                                            "validationMessage": "Subnet name must be valid"
                                         }
-                                    },
-                                    "columns": [
-                                        {
-                                            "id": "select",
-                                            "header": "Select",
-                                            "width": "1fr",
-                                            "element": {
-                                                "type": "Microsoft.Common.CheckBox",
-                                                "label": "Select this subnet"
-                                            }
-                                        },
-                                        {
-                                            "id": "subnetName",
-                                            "header": "Subnet Name",
-                                            "width": "2fr",
-                                            "element": {
-                                                "type": "Microsoft.Common.TextBox",
-                                                "placeholder": "Subnet name",
-                                                "constraints": {
-                                                    "required": false,
-                                                    "regex": "",
-                                                    "validationMessage": ""
-                                                }
-                                            }
-                                        },
-                                        {
-                                            "id": "addressPrefix",
-                                            "header": "Address Prefix",
-                                            "width": "2fr",
-                                            "element": {
-                                                "type": "Microsoft.Common.TextBox",
-                                                "placeholder": "e.g., 10.0.1.0/24",
-                                                "constraints": {
-                                                    "required": false,
-                                                    "regex": "",
-                                                    "validationMessage": ""
-                                                }
-                                            }
-                                        }
-                                    ]
+                                    }
                                 }
-                            }
-                        ]
+                            ]
+                        }
+                    },
+                    {
+                        "name": "natGatewayName",
+                        "type": "Microsoft.Common.TextBox",
+                        "label": "NAT Gateway Name",
+                        "defaultValue": "[concat('natGateway-', take(uniqueString(resourceGroup().id), 8))]",
+                        "toolTip": "Name for the NAT Gateway resource",
+                        "constraints": {
+                            "required": true,
+                            "regex": "^[a-zA-Z0-9][a-zA-Z0-9_\\-\\.]*[a-zA-Z0-9_]$",
+                            "validationMessage": "NAT Gateway name must be 1-80 characters and can contain letters, numbers, hyphens, periods, and underscores"
+                        }
+                    },
+                    {
+                        "name": "publicIpName",
+                        "type": "Microsoft.Common.TextBox",
+                        "label": "Public IP Name",
+                        "defaultValue": "[concat('pip-natGateway-', take(uniqueString(resourceGroup().id), 8))]",
+                        "toolTip": "Name for the public IP address resource",
+                        "constraints": {
+                            "required": true,
+                            "regex": "^[a-zA-Z0-9][a-zA-Z0-9_\\-\\.]*[a-zA-Z0-9_]$",
+                            "validationMessage": "Public IP name must be 1-80 characters and can contain letters, numbers, hyphens, periods, and underscores"
+                        }
                     }
                 ]
             }
         ],
         "outputs": {
             "location": "[location()]",
-            "virtualNetworkName": "[steps('networkConfig').vnetSelection.name]",
-            "virtualNetworkResourceGroup": "[steps('networkConfig').vnetSelection.resourceGroup]",
-            "virtualNetworkId": "[steps('networkConfig').vnetSelection.id]",
-            "subnetNames": "[map(filter(steps('networkConfig').subnetSelectionSection.selectedSubnets, (item) => equals(item.select, true)), (item) => item.subnetName)]"
+            "vnetName": "[steps('networkConfig').vnetName]",
+            "vnetResourceGroup": "[steps('networkConfig').vnetResourceGroup]",
+            "subnetNames": "[steps('networkConfig').subnetNames]",
+            "natGatewayName": "[steps('networkConfig').natGatewayName]",
+            "publicIpName": "[steps('networkConfig').publicIpName]"
         }
     }
 }
