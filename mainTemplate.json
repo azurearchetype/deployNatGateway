@@ -42,7 +42,11 @@
         }
     },
     "variables": {
-        "subnetRefs": "[createArray(format('{0}/subnets/{1}', resourceId(parameters('vnetResourceGroup'), 'Microsoft.Network/virtualNetworks', parameters('vnetName')), parameters('subnetNames')[0].name), format('{0}/subnets/{1}', resourceId(parameters('vnetResourceGroup'), 'Microsoft.Network/virtualNetworks', parameters('vnetName')), parameters('subnetNames')[1].name), format('{0}/subnets/{1}', resourceId(parameters('vnetResourceGroup'), 'Microsoft.Network/virtualNetworks', parameters('vnetName')), parameters('subnetNames')[2].name), format('{0}/subnets/{1}', resourceId(parameters('vnetResourceGroup'), 'Microsoft.Network/virtualNetworks', parameters('vnetName')), parameters('subnetNames')[3].name), format('{0}/subnets/{1}', resourceId(parameters('vnetResourceGroup'), 'Microsoft.Network/virtualNetworks', parameters('vnetName')), parameters('subnetNames')[4].name))]"
+        "subnet1Name": "[parameters('subnetNames').subnet1Name]",
+        "subnet2Name": "[if(parameters('subnetNames').includeSubnet2, parameters('subnetNames').subnet2Name, '')]",
+        "subnet3Name": "[if(parameters('subnetNames').includeSubnet3, parameters('subnetNames').subnet3Name, '')]",
+        "subnet4Name": "[if(parameters('subnetNames').includeSubnet4, parameters('subnetNames').subnet4Name, '')]",
+        "subnet5Name": "[if(parameters('subnetNames').includeSubnet5, parameters('subnetNames').subnet5Name, '')]"
     },
     "resources": [
         {
@@ -76,12 +80,12 @@
         {
             "type": "Microsoft.Network/virtualNetworks/subnets",
             "apiVersion": "2021-08-01",
-            "name": "[format('{0}/{1}', parameters('vnetName'), parameters('subnetNames')[0].name)]",
+            "name": "[format('{0}/{1}', parameters('vnetName'), variables('subnet1Name'))]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/natGateways', parameters('natGatewayName'))]"
             ],
             "properties": {
-                "addressPrefix": "[reference(resourceId(parameters('vnetResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetNames')[0].name), '2021-08-01').addressPrefix]",
+                "addressPrefix": "[reference(resourceId(parameters('vnetResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), variables('subnet1Name')), '2021-08-01').addressPrefix]",
                 "natGateway": {
                     "id": "[resourceId('Microsoft.Network/natGateways', parameters('natGatewayName'))]"
                 }
@@ -90,13 +94,13 @@
         {
             "type": "Microsoft.Network/virtualNetworks/subnets",
             "apiVersion": "2021-08-01",
-            "name": "[format('{0}/{1}', parameters('vnetName'), parameters('subnetNames')[1].name)]",
-            "condition": "[greater(length(parameters('subnetNames')), 1)]",
+            "name": "[format('{0}/{1}', parameters('vnetName'), variables('subnet2Name'))]",
+            "condition": "[parameters('subnetNames').includeSubnet2]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/natGateways', parameters('natGatewayName'))]"
             ],
             "properties": {
-                "addressPrefix": "[reference(resourceId(parameters('vnetResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetNames')[1].name), '2021-08-01').addressPrefix]",
+                "addressPrefix": "[reference(resourceId(parameters('vnetResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), variables('subnet2Name')), '2021-08-01').addressPrefix]",
                 "natGateway": {
                     "id": "[resourceId('Microsoft.Network/natGateways', parameters('natGatewayName'))]"
                 }
@@ -105,13 +109,13 @@
         {
             "type": "Microsoft.Network/virtualNetworks/subnets",
             "apiVersion": "2021-08-01",
-            "name": "[format('{0}/{1}', parameters('vnetName'), parameters('subnetNames')[2].name)]",
-            "condition": "[greater(length(parameters('subnetNames')), 2)]",
+            "name": "[format('{0}/{1}', parameters('vnetName'), variables('subnet3Name'))]",
+            "condition": "[parameters('subnetNames').includeSubnet3]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/natGateways', parameters('natGatewayName'))]"
             ],
             "properties": {
-                "addressPrefix": "[reference(resourceId(parameters('vnetResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetNames')[2].name), '2021-08-01').addressPrefix]",
+                "addressPrefix": "[reference(resourceId(parameters('vnetResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), variables('subnet3Name')), '2021-08-01').addressPrefix]",
                 "natGateway": {
                     "id": "[resourceId('Microsoft.Network/natGateways', parameters('natGatewayName'))]"
                 }
@@ -120,13 +124,13 @@
         {
             "type": "Microsoft.Network/virtualNetworks/subnets",
             "apiVersion": "2021-08-01",
-            "name": "[format('{0}/{1}', parameters('vnetName'), parameters('subnetNames')[3].name)]",
-            "condition": "[greater(length(parameters('subnetNames')), 3)]",
+            "name": "[format('{0}/{1}', parameters('vnetName'), variables('subnet4Name'))]",
+            "condition": "[parameters('subnetNames').includeSubnet4]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/natGateways', parameters('natGatewayName'))]"
             ],
             "properties": {
-                "addressPrefix": "[reference(resourceId(parameters('vnetResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetNames')[3].name), '2021-08-01').addressPrefix]",
+                "addressPrefix": "[reference(resourceId(parameters('vnetResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), variables('subnet4Name')), '2021-08-01').addressPrefix]",
                 "natGateway": {
                     "id": "[resourceId('Microsoft.Network/natGateways', parameters('natGatewayName'))]"
                 }
@@ -135,13 +139,13 @@
         {
             "type": "Microsoft.Network/virtualNetworks/subnets",
             "apiVersion": "2021-08-01",
-            "name": "[format('{0}/{1}', parameters('vnetName'), parameters('subnetNames')[4].name)]",
-            "condition": "[greater(length(parameters('subnetNames')), 4)]",
+            "name": "[format('{0}/{1}', parameters('vnetName'), variables('subnet5Name'))]",
+            "condition": "[parameters('subnetNames').includeSubnet5]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/natGateways', parameters('natGatewayName'))]"
             ],
             "properties": {
-                "addressPrefix": "[reference(resourceId(parameters('vnetResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetNames')[4].name), '2021-08-01').addressPrefix]",
+                "addressPrefix": "[reference(resourceId(parameters('vnetResourceGroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), variables('subnet5Name')), '2021-08-01').addressPrefix]",
                 "natGateway": {
                     "id": "[resourceId('Microsoft.Network/natGateways', parameters('natGatewayName'))]"
                 }

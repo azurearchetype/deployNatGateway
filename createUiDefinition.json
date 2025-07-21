@@ -158,7 +158,7 @@
             "location": "[location()]",
             "vnetName": "[steps('networkConfig').vnetName]",
             "vnetResourceGroup": "[resourceGroup().name]", 
-            "subnetNames": "[filter(createArray(createObject('name', steps('networkConfig').subnetSection.subnet1Name), if(steps('networkConfig').subnetSection.includeSubnet2, createObject('name', steps('networkConfig').subnetSection.subnet2Name), json('null')), if(steps('networkConfig').subnetSection.includeSubnet3, createObject('name', steps('networkConfig').subnetSection.subnet3Name), json('null')), if(steps('networkConfig').subnetSection.includeSubnet4, createObject('name', steps('networkConfig').subnetSection.subnet4Name), json('null')), if(steps('networkConfig').subnetSection.includeSubnet5, createObject('name', steps('networkConfig').subnetSection.subnet5Name), json('null'))), (item) => not(equals(item, json('null'))))]",
+            "subnetNames": "[steps('networkConfig').subnetSection]",
             "natGatewayName": "[steps('networkConfig').natGatewayName]",
             "publicIpName": "[steps('networkConfig').publicIpName]"
         }
