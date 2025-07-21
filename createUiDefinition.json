@@ -125,11 +125,11 @@
                 ]
             }
         ],
-        "outputs"; {
-            "location"; "[location()]",
-            "vnetName"; "[steps('networkConfig').vnetSelection.name]",
-            "vnetResourceGroup"; "[steps('networkConfig').vnetSelection.resourceGroup]",
-            "subnetNames"; "[steps('networkConfig').vnetSelection.subnets]"
+        "outputs": {
+            "location": "[location()]",
+            "vnetName": "[steps('networkConfig').vnetSelection.name]",
+            "vnetResourceGroup": "[steps('networkConfig').vnetSelection.resourceGroup]",
+            "subnetNames": "[steps('networkConfig').vnetSelection.subnets]"
         }
     }
 }
