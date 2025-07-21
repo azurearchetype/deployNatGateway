@@ -75,38 +75,16 @@
           },
           {
             "name": "subnetSelection",
-            "type": "Microsoft.Common.DropDown",
+            "type": "Microsoft.Solutions.SubnetSelector",
             "label": "Select Subnets",
-            "placeholder": "Choose subnets to associate with NAT Gateway",
-            "multiselect": true,
-            "selectAll": false,
-            "filter": true,
-            "filterPlaceholder": "Filter subnets...",
-            "multiLine": true,
-            "defaultDescription": "Select 1-2 subnets",
-            "toolTip": "Select up to 2 subnets that should use this NAT Gateway for outbound connectivity.",
+            "toolTip": "Select up to 2 subnets to associate with the NAT Gateway",
             "constraints": {
-              "allowedValues": "[map(steps('networkConfig').existingVirtualNetwork.subnets, (item) => parse(concat('{\"label\":\"', item.name, ' (', item.addressPrefix, ')\",\"description\":\"Address: ', item.addressPrefix, '\",\"value\":\"', item.name, '\"}')))]",
-              "required": true
+              "required": true,
+              "minLength": 1,
+              "maxLength": 2
             },
-            "visible": "[greater(length(steps('networkConfig').existingVirtualNetwork.subnets), 0)]"
-          },
-          {
-            "name": "noSubnetsMessage",
-            "type": "Microsoft.Common.InfoBox",
-            "visible": "[equals(length(steps('networkConfig').existingVirtualNetwork.subnets), 0)]",
             "options": {
-              "icon": "Warning",
-              "text": "The selected Virtual Network does not contain any subnets. Please select a different Virtual Network or create subnets in the selected VNet first."
-            }
-          },
-          {
-            "name": "subnetLimitWarning",
-            "type": "Microsoft.Common.InfoBox",
-            "visible": "[greater(length(steps('networkConfig').subnetSelection), 2)]",
-            "options": {
-              "icon": "Warning",
-              "text": "This template supports up to 2 subnets. Only the first 2 selected subnets will be used."
+              "vNetReference": "existingVirtualNetwork"
             }
           }
         ]
