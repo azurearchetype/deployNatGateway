@@ -113,9 +113,10 @@
         ],
         "outputs": {
             "location": "[location()]",
-            "vnetName": "[steps('networkConfig').vnetSelection.name]",
-            "vnetResourceGroup": "[steps('networkConfig').vnetSelection.resourceGroup]",
-            "selectedSubnets": "[steps('networkConfig').subnetSelectionSection.selectedSubnets]"
+            "virtualNetworkName": "[steps('networkConfig').vnetSelection.name]",
+            "virtualNetworkResourceGroup": "[steps('networkConfig').vnetSelection.resourceGroup]",
+            "virtualNetworkId": "[steps('networkConfig').vnetSelection.id]",
+            "subnetNames": "[map(filter(steps('networkConfig').subnetSelectionSection.selectedSubnets, (item) => equals(item.select, true)), (item) => item.subnetName)]"
         }
     }
 }
