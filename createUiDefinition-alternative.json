@@ -1,0 +1,124 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/0.1.2-preview/CreateUIDefinition.MultiVm.json#",
+    "handler": "Microsoft.Azure.CreateUIDef",
+    "version": "0.1.2-preview",
+    "parameters": {
+        "basics": [],
+        "steps": [
+            {
+                "name": "networkConfig",
+                "label": "Network Configuration",
+                "subLabel": {
+                    "preValidation": "Configure the virtual network and subnets",
+                    "postValidation": "Done"
+                },
+                "bladeTitle": "Network Configuration",
+                "elements": [
+                    {
+                        "name": "vnetSelector",
+                        "type": "Microsoft.Network.VirtualNetworkCombo",
+                        "label": {
+                            "virtualNetwork": "Virtual network",
+                            "subnets": "Subnets"
+                        },
+                        "toolTip": {
+                            "virtualNetwork": "Virtual network to deploy the NAT Gateway in",
+                            "subnets": "Subnets to associate with the NAT Gateway"
+                        },
+                        "defaultValue": {
+                            "name": "vnet01",
+                            "addressPrefixSize": "/16"
+                        },
+                        "constraints": {
+                            "minAddressPrefixSize": "/16"
+                        },
+                        "subnets": {
+                            "subnet1": {
+                                "label": "First subnet",
+                                "defaultValue": {
+                                    "name": "subnet-1",
+                                    "addressPrefixSize": "/24"
+                                },
+                                "constraints": {
+                                    "minAddressPrefixSize": "/24"
+                                }
+                            },
+                            "subnet2": {
+                                "label": "Second subnet",
+                                "defaultValue": {
+                                    "name": "subnet-2", 
+                                    "addressPrefixSize": "/24"
+                                },
+                                "constraints": {
+                                    "minAddressPrefixSize": "/24"
+                                }
+                            },
+                            "subnet3": {
+                                "label": "Third subnet",
+                                "defaultValue": {
+                                    "name": "subnet-3",
+                                    "addressPrefixSize": "/24"
+                                },
+                                "constraints": {
+                                    "minAddressPrefixSize": "/24"
+                                }
+                            },
+                            "subnet4": {
+                                "label": "Fourth subnet",
+                                "defaultValue": {
+                                    "name": "subnet-4",
+                                    "addressPrefixSize": "/24"
+                                },
+                                "constraints": {
+                                    "minAddressPrefixSize": "/24"
+                                }
+                            },
+                            "subnet5": {
+                                "label": "Fifth subnet",
+                                "defaultValue": {
+                                    "name": "subnet-5",
+                                    "addressPrefixSize": "/24"
+                                },
+                                "constraints": {
+                                    "minAddressPrefixSize": "/24"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "name": "natGatewayName",
+                        "type": "Microsoft.Common.TextBox",
+                        "label": "NAT Gateway Name",
+                        "defaultValue": "[concat('natGateway-', take(uniqueString(resourceGroup().id), 8))]",
+                        "toolTip": "Name for the NAT Gateway resource",
+                        "constraints": {
+                            "required": true,
+                            "regex": "^[a-zA-Z0-9][a-zA-Z0-9_\\-\\.]*[a-zA-Z0-9_]$",
+                            "validationMessage": "NAT Gateway name must be 1-80 characters and can contain letters, numbers, hyphens, periods, and underscores"
+                        }
+                    },
+                    {
+                        "name": "publicIpName",
+                        "type": "Microsoft.Common.TextBox",
+                        "label": "Public IP Name",
+                        "defaultValue": "[concat('pip-natGateway-', take(uniqueString(resourceGroup().id), 8))]",
+                        "toolTip": "Name for the public IP address resource",
+                        "constraints": {
+                            "required": true,
+                            "regex": "^[a-zA-Z0-9][a-zA-Z0-9_\\-\\.]*[a-zA-Z0-9_]$",
+                            "validationMessage": "Public IP name must be 1-80 characters and can contain letters, numbers, hyphens, periods, and underscores"
+                        }
+                    }
+                ]
+            }
+        ],
+        "outputs": {
+            "location": "[location()]",
+            "vnetName": "[steps('networkConfig').vnetSelector.name]",
+            "vnetResourceGroup": "[resourceGroup().name]",
+            "subnetNames": "[steps('networkConfig').vnetSelector.subnets]",
+            "natGatewayName": "[steps('networkConfig').natGatewayName]",
+            "publicIpName": "[steps('networkConfig').publicIpName]"
+        }
+    }
+}
