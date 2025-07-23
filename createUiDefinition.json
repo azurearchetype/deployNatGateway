@@ -3,7 +3,24 @@
     "handler": "Microsoft.Azure.CreateUIDef", 
     "version": "0.1.2-preview",
     "parameters": {
-        "basics": [],
+        "basics": [
+            {
+                "name": "resourceGroupInfo",
+                "type": "Microsoft.Common.InfoBox",
+                "options": {
+                    "icon": "Info",
+                    "text": "📋 Resource Group Information: This deployment will create a NAT Gateway and associated Public IP address in the selected resource group. The NAT Gateway will be configured to work with an existing Virtual Network that may be located in this resource group or a different one that you specify in the next step."
+                }
+            },
+            {
+                "name": "regionInfo",
+                "type": "Microsoft.Common.InfoBox",
+                "options": {
+                    "icon": "Warning",
+                    "text": "🌍 Region Selection: The NAT Gateway will be deployed in the region you select below. ⚠️ IMPORTANT: This region must match the region where your existing Virtual Network is located. NAT Gateways can only be associated with Virtual Networks in the same Azure region."
+                }
+            }
+        ],
         "steps": [
             {
                 "name": "networkConfig",
