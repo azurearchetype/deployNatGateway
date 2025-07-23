@@ -220,7 +220,7 @@
                         "type": "Microsoft.Common.InfoBox",
                         "options": {
                             "icon": "Info",
-                            "text": "💡 CAF Naming: ng-(workload)-(env)-(region)-01 Ex: ng-avd-infra-westus-01"
+                            "text": "💡 CAF Naming: ng-workload-env-region-01 Example: ng-avd-infra-westus-01"
                         }
                     },
                     {
@@ -240,7 +240,7 @@
                         "type": "Microsoft.Common.InfoBox",
                         "options": {
                             "icon": "Info",
-                            "text": "💡 CAF Naming: pip-<workload>-<env>-<region>-01 (Ex: pip-avd-infra-westus-01)"
+                            "text": "💡 CAF Naming: pip-workload-env-region-01 Example: pip-avd-infra-westus-01"
                         }
                     }
                 ]
