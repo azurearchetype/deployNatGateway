@@ -32,7 +32,7 @@ This custom Azure template deploys a NAT gateway and associates it with multiple
 
 ## Architecture
 
-<img width="500" height="400" alt="deployNatGateway" src="https://github.com/user-attachments/assets/746d797f-ebac-4f0d-baf8-d0ace26b29e4" />
+<img width="500" height="400" alt="deployNatGateway" src="https://github.com/user-attachments/assets/3e0baa33-74d4-4e63-92ce-5349196782a8" />
 
 ---
 
