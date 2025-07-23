@@ -176,6 +176,34 @@
                         }
                     },
                     {
+                        "name": "deploymentSummary",
+                        "type": "Microsoft.Common.InfoBox",
+                        "visible": "[not(empty(steps('networkConfig').vnetName))]",
+                        "options": {
+                            "icon": "Info",
+                            "text": "[concat('📋 Deployment Summary:\\n• VNet: ', steps('networkConfig').vnetName, '\\n• Resource Group: ', if(empty(steps('networkConfig').vnetResourceGroup), resourceGroup().name, steps('networkConfig').vnetResourceGroup), '\\n• Primary Subnet: ', steps('networkConfig').subnet1Name, if(steps('networkConfig').includeSubnet2, concat('\\n• Additional Subnets: ', steps('networkConfig').subnet2Name), ''), '\\n\\n⚠️ The deployment will validate these resources exist during execution.')]"
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "natGatewayConfig",
+                "label": "NAT Gateway Configuration",
+                "subLabel": {
+                    "preValidation": "Configure NAT Gateway and Public IP names",
+                    "postValidation": "Done"
+                },
+                "bladeTitle": "NAT Gateway Configuration",
+                "elements": [
+                    {
+                        "name": "natGatewayInfo",
+                        "type": "Microsoft.Common.InfoBox",
+                        "options": {
+                            "icon": "Info",
+                            "text": "🌐 Configure the names for your NAT Gateway and its associated Public IP address. These resources will be created in the selected resource group and region."
+                        }
+                    },
+                    {
                         "name": "natGatewayName",
                         "type": "Microsoft.Common.TextBox",
                         "label": "NAT Gateway Name",
@@ -198,15 +226,6 @@
                             "regex": "^[a-zA-Z0-9][a-zA-Z0-9_\\-\\.]*[a-zA-Z0-9_]$",
                             "validationMessage": "Public IP name must be 1-80 characters and can contain letters, numbers, hyphens, periods, and underscores"
                         }
-                    },
-                    {
-                        "name": "deploymentSummary",
-                        "type": "Microsoft.Common.InfoBox",
-                        "visible": "[not(empty(steps('networkConfig').vnetName))]",
-                        "options": {
-                            "icon": "Info",
-                            "text": "[concat('📋 Deployment Summary:\\n• VNet: ', steps('networkConfig').vnetName, '\\n• Resource Group: ', if(empty(steps('networkConfig').vnetResourceGroup), resourceGroup().name, steps('networkConfig').vnetResourceGroup), '\\n• Primary Subnet: ', steps('networkConfig').subnet1Name, if(steps('networkConfig').includeSubnet2, concat('\\n• Additional Subnets: ', steps('networkConfig').subnet2Name), ''), '\\n\\n⚠️ The deployment will validate these resources exist during execution.')]"
-                        }
                     }
                 ]
             }
@@ -226,8 +245,8 @@
                 "includeSubnet5": "[steps('networkConfig').includeSubnet5]",
                 "subnet5Name": "[steps('networkConfig').subnet5Name]"
             },
-            "natGatewayName": "[steps('networkConfig').natGatewayName]",
-            "publicIpName": "[steps('networkConfig').publicIpName]"
+            "natGatewayName": "[steps('natGatewayConfig').natGatewayName]",
+            "publicIpName": "[steps('natGatewayConfig').publicIpName]"
         }
     }
 }
