@@ -84,7 +84,7 @@
                         "type": "Microsoft.Common.InfoBox",
                         "options": {
                             "icon": "Info",
-                            "text": "Select the subnets from your virtual network that you want to associate with the NAT Gateway. Use the check boxes to add additional subnets you want to associate with the NAT Gateway."
+                            "text": "Enter the subnets from your virtual network that you want to associate with the NAT Gateway. Use the check boxes to add additional subnets you want to associate with the NAT Gateway."
                         }
                     },
                     {
