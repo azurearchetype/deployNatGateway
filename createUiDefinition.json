@@ -216,6 +216,14 @@
                         }
                     },
                     {
+                        "name": "natGatewayNamingConvention",
+                        "type": "Microsoft.Common.InfoBox",
+                        "options": {
+                            "icon": "Info",
+                            "text": "💡 CAF Naming Convention Suggestion: Follow Azure Cloud Adoption Framework best practices with the format 'ng-<workload>-<environment>-<region>-01'. Example: ng-avd-infra-westus-01 (NAT Gateway for AVD infrastructure workload in West US environment)."
+                        }
+                    },
+                    {
                         "name": "publicIpName",
                         "type": "Microsoft.Common.TextBox",
                         "label": "Public IP Name",
@@ -225,6 +233,14 @@
                             "required": true,
                             "regex": "^[a-zA-Z0-9][a-zA-Z0-9_\\-\\.]*[a-zA-Z0-9_]$",
                             "validationMessage": "Public IP name must be 1-80 characters and can contain letters, numbers, hyphens, periods, and underscores"
+                        }
+                    },
+                    {
+                        "name": "publicIpNamingConvention",
+                        "type": "Microsoft.Common.InfoBox",
+                        "options": {
+                            "icon": "Info",
+                            "text": "💡 CAF Naming Convention Suggestion: Follow Azure Cloud Adoption Framework best practices with the format 'pip-<workload>-<environment>-<region>-01'. Example: pip-avd-infra-westus-01 (Public IP for AVD infrastructure workload in West US environment)."
                         }
                     }
                 ]
