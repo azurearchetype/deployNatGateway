@@ -220,7 +220,7 @@
                         "type": "Microsoft.Common.InfoBox",
                         "options": {
                             "icon": "Info",
-                            "text": "💡 CAF Naming Convention Suggestion: Follow Azure Cloud Adoption Framework best practices with the format 'ng-<workload>-<environment>-<region>-01'. Example: ng-avd-infra-westus-01 (NAT Gateway for AVD infrastructure workload in West US environment)."
+                            "text": "💡 CAF Naming Convention Suggestion: Follow Azure Cloud Adoption Framework best practices with the format ng-<workload>-<environment>-<region>-01. Ex: ng-avd-infra-westus-01."
                         }
                     },
                     {
@@ -240,7 +240,7 @@
                         "type": "Microsoft.Common.InfoBox",
                         "options": {
                             "icon": "Info",
-                            "text": "💡 CAF Naming Convention Suggestion: Follow Azure Cloud Adoption Framework best practices with the format 'pip-<workload>-<environment>-<region>-01'. Example: pip-avd-infra-westus-01 (Public IP for AVD infrastructure workload in West US environment)."
+                            "text": "💡 CAF Naming Convention Suggestion: Follow Azure Cloud Adoption Framework best practices with the format pip-<workload>-<environment>-<region>-01. Ex: pip-avd-infra-westus-01."
                         }
                     }
                 ]
