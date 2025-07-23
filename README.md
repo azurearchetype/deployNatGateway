@@ -11,5 +11,7 @@ Deploy a NAT gateway and associate it with multiple subnets in a single virtual 
 3. Select a virtual network and one or more subnets from the custom UI.
 4. Complete the deployment to create the NAT gateway and associate it with the selected subnets.
 
+## Architecture
+
 <img width="500" height="400" alt="deployNatGateway" src="https://github.com/user-attachments/assets/28cfdcce-284e-4b4a-967e-9f41042a42f7" />
 
